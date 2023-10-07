@@ -28,6 +28,12 @@ Route::get('/home', function () {
 
 Route::resource('data', DataController::class);
 
+Route::prefix('action')->group(function () {
+    Route::post('/data/importexcel', [DataController::class, 'importexcel'])->name('data.importexcel');
+     Route::get('/data/exportexcel', [DataController::class, 'exportExcel'])->name('data.exportexcel');
+     Route::get('/data/exportpdf', [DataController::class, 'exportpdf'])->name('data.exportpdf');
+});
+
 
 
 

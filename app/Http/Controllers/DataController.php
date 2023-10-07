@@ -1,20 +1,49 @@
 <?php
 
 namespace App\Http\Controllers;
-
+Use \Carbon\Carbon;
 use App\Models\Data;
+use App\Imports\DataImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Route;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class DataController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function importexcel(Request $request)
+     {
+        $validatedData = $request->validate([
+            'import_file' => 'required|mimes:xlsx|max:10000'
+        ]);
+
+        $file = $request->file('import_file');
+        $fileName = $file->getClientOriginalName();
+        $file->move('excelimportfolder', $fileName);
+        Excel::import(new DataImport, public_path('/excelimportfolder/'.$fileName));
+        
+        return redirect('/data')->with('success', 'Import Success');
+     }
+     public function exportexcel()
+     {
+        $id = IdGenerator::generate(['table' => 'data', 'field' => 'data_number', 'length' => 9, 'prefix' => 'DOC-']);
+        @dd($id);
+      
+     }
+     public function exportpdf()
+     {
+         @dd("hello");
+      
+     }
     public function index()
     {
-       
+       $data = Data::paginate(10);
         return view('data.index', [
             "title" => "Data List",
+            "data" => $data
         ]);
     }
 

@@ -1,4 +1,4 @@
-<div class="sidebar-wrapper h-auto p-3 fixed-top d-flex">
+<div class="sidebar-wrapper h-auto p-3 fixed-top d-flex w-25">
     <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
         aria-controls="offcanvasWithBothOptions"><i class="fa-solid fa-bars"></i></button>
 </div>
