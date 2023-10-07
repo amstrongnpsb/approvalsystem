@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('index',[
+        "title" => "Home",
+    ]);
 });
 Route::get('/home', function () {
-    return view('index');
+     return view('index',[
+        "title" => "Home",
+    ]);
 })->name('home');
+
+
+Route::resource('data', DataController::class);
+
+
+
+
+
+
+
 

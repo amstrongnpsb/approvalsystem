@@ -1,3 +1,11 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif !important;
+    scroll-behavior: smooth;
+    background-color: var(--base-white) !important;
+}
 :root {
     --red: #a20254;
     --yellow: #e8be0c;
@@ -12,8 +20,9 @@
     color: var(--red);
 }
 
-a.nav-link.active {
+.nav-item a.active {
     color: var(--green) !important;
+    background-color: var(--base-white) !important;
 }
 
 #sidebar {
