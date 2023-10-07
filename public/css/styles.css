@@ -1,0 +1,21 @@
+:root {
+    --red: #a20254;
+    --yellow: #e8be0c;
+    --green: #02e871;
+    --base-white: #fff9f9;
+    --base-blue: #00012d;
+}
+.nav-item a {
+    color: var(--base-blue);
+}
+.nav-item a:hover {
+    color: var(--red);
+}
+
+a.nav-link.active {
+    color: var(--green) !important;
+}
+
+#sidebar {
+    width: 300px;
+}
