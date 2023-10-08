@@ -23,8 +23,11 @@
             <td class="text-capitalize">{{ $d->status }}</td>
             <td class="text-capitalize">{{ $d->created_at }}</td>
         </tr>
-        @endforeach    
+        @endforeach
     </tbody>
 </table>
+<div class="d-flex mt-4">
+    {{ $data->links() }}
+</div>
 
 @endsection

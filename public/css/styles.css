@@ -12,6 +12,7 @@ html {
     --green: #02e871;
     --base-white: #fff9f9;
     --base-blue: #00012d;
+    --base-dark: #212529;
 }
 .nav-item a {
     color: var(--base-blue);
@@ -27,4 +28,20 @@ html {
 
 #sidebar {
     width: 300px;
+}
+
+.page-link {
+    background-color: var(--base-dark) !important;
+    color: var(--base-white) !important;
+    border: var(--base-white) 1px solid !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--red) !important;
+}
+
+.page-link:active,
+.page-link:focus {
+    border: var(--green) 1px solid !important;
+    box-shadow: none !important;
 }
