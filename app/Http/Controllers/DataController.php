@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 Use \Carbon\Carbon;
 use App\Models\Data;
 use App\Imports\DataImport;
+use App\Jobs\importExcelJob;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +24,8 @@ class DataController extends Controller
         $file = $request->file('import_file');
         $fileName = $file->getClientOriginalName();
         $file->move('excelimportfolder', $fileName);
-        Excel::import(new DataImport, public_path('/excelimportfolder/'.$fileName));
-        
-        return redirect('/data')->with('success', 'Import Success');
+        importExcelJob::dispatch($fileName);
+        return redirect('/data')->with('success', 'your import under process');
      }
      public function exportexcel()
      {
