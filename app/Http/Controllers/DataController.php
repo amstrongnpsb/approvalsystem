@@ -6,6 +6,7 @@ use App\Models\Data;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -15,6 +16,12 @@ class DataController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function home()
+     {
+        return view('index', [
+            'title' => 'HomePage',
+        ]);
+     }
     public function importexcel(Request $request)
      {
         $validatedData = $request->validate([
@@ -40,10 +47,12 @@ class DataController extends Controller
      }
     public function index()
     {
-       $data = Data::paginate(10);
+        $user = Auth::user();
+        $data = Data::paginate(10);
         return view('data.index', [
             "title" => "Data List",
-            "data" => $data
+            "data" => $data,
+            'user' => $user
         ]);
     }
 
