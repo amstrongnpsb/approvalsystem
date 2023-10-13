@@ -37,8 +37,8 @@
     </div>
     <div class="offcanvas-footer d-flex gap-2 p-2">
         <i class="fa-solid fa-user"></i>
-        <small class="fw-bold">Amstrong Nugraha</small>
-        <a class="nav-link fw-bold ms-auto" href="#">Logout<span class="m-2"><i
+        <small class="fw-bold text-capitalize">{{ $user->name }}</small>
+        <a class="nav-link fw-bold ms-auto" href="{{ route('logout') }}">Logout<span class="m-2"><i
                     class="fa-solid fa-right-from-bracket"></i></span></a>
     </div>
 </div>
