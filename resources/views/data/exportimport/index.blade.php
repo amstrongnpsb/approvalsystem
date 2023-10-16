@@ -21,8 +21,9 @@
             Export Pdf
         </a>
     </div>
-    <form class="d-flex w-25" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="d-flex w-25" role="search" action=" /data" method="get">
+        <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search"
+          value="{{ request('search') }}">
         <button class="btn btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 </div>

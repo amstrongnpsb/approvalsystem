@@ -17,9 +17,11 @@ class DataController extends Controller
      * Display a listing of the resource.
      */
     public function home()
-     {
+     { 
+        $user = Auth::user();
         return view('index', [
             'title' => 'HomePage',
+            'user' => $user
         ]);
      }
     public function importexcel(Request $request)
@@ -48,7 +50,7 @@ class DataController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $data = Data::paginate(10);
+        $data = Data::latest()->filter(request(['search','severity_filter']))->paginate(10);
         return view('data.index', [
             "title" => "Data List",
             "data" => $data,

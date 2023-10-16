@@ -29,6 +29,11 @@ Route::prefix('action')->group(function () {
      Route::get('/data/exportpdf', [DataController::class, 'exportpdf'])->name('data.exportpdf');
 })->middleware('auth');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', [DataController::class, 'home'])->name('home');
+    Route::get('/home', [DataController::class, 'home']);
+});
+
 
 
 
