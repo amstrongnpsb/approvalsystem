@@ -9,7 +9,7 @@
                 data-bs-dismiss="offcanvas"></i></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav gap-2">
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('home') ? 'active' : '' }} fw-bold fs-4 " aria-current="page"
                     href="{{ route('home') }}">
@@ -17,17 +17,28 @@
                     <small>Home</small>
                 </a>
             </li>
-            <div type="button" class="dropdown-toggle fw-bold fs-4" data-bs-toggle="dropdown">
+            <div type="button" class="dropdown-toggle fw-bold fs-4 " data-bs-toggle="dropdown">
                 <i class="fa-solid fa-list-check"></i>
                 <small>Data</small>
             </div>
-            <ul class="dropdown-menu nav-item">
+            <ul class="dropdown-menu nav-item w-75">
                 <a href="/data" class="dropdown-item {{ Request::is('data') ? 'active' : '' }} fw-bold">Data
                     List</a>
                 <a href="/data/create"
                     class="dropdown-item {{ Request::is('data/create*') ? 'active' : '' }} fw-bold">Create
                     Data</a>
                 <a href="/data/edit" class="dropdown-item fw-bold">Edit Data</a>
+            </ul>
+            <div type="button" class="dropdown-toggle fw-bold fs-4" data-bs-toggle="dropdown">
+                <i class="fa-solid fa-users"></i>
+                <small>User</small>
+            </div>
+            <ul class="dropdown-menu nav-item w-75">
+                <a href="{{ route('user.index') }}" class="dropdown-item {{ Request::is('user') ? 'active' : '' }} fw-bold">User
+                    List</a>
+                <a href="{{ route('user.create') }}"
+                    class="dropdown-item {{ Request::is('user/create*') ? 'active' : '' }} fw-bold">Create
+                    User</a>
             </ul>
 
         </ul>

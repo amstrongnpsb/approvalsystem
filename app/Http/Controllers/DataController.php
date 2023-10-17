@@ -18,11 +18,13 @@ class DataController extends Controller
      */
     public function home()
      {
+        $user = Auth::user();
         return view('index', [
             'title' => 'HomePage',
+            'user' => $user
         ]);
      }
-    public function importexcel(Request $request)
+    public function importExcel(Request $request)
      {
         $validatedData = $request->validate([
             'import_file' => 'required|mimes:xlsx|max:10000'
@@ -34,13 +36,13 @@ class DataController extends Controller
         importExcelJob::dispatch($fileName);
         return redirect('/data')->with('success', 'your import under process');
      }
-     public function exportexcel()
+     public function exportExcel()
      {
         $id = IdGenerator::generate(['table' => 'data', 'field' => 'data_number', 'length' => 9, 'prefix' => 'DOC-']);
         @dd($id);
       
      }
-     public function exportpdf()
+     public function exportPdf()
      {
          @dd("hello");
       
@@ -61,9 +63,10 @@ class DataController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
         return view('index', [
             "title" => "Create Data",
-            "active" => "ticketlist",
+            "user" => $user
         ]);
     }
 
