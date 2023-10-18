@@ -82,7 +82,6 @@ class DataController extends Controller
      */
     public function show(Data $data)
     {
-        //
     }
 
     /**

@@ -18,7 +18,7 @@
         <tr>
             <th scope="row">{{($data->currentPage() - 1) * $data->perPage() + $loop->iteration}}</th>
             <td class="text-capitalize">{{ $d->data_number }}</td>
-            <td class="text-capitalize">{{ $d->description }}</td>
+            <td class="text-capitalize">{{ Str::of($d->description)->limit(100)}}</td>
             <td class="text-capitalize">{{ $d->creator }}</td>
             <td class="text-capitalize">{{ $d->status }}</td>
             <td class="text-capitalize">{{ $d->created_at }}</td>
