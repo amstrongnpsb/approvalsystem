@@ -44,5 +44,6 @@ class DataSeeder extends Seeder
             'creator' => "Amstrong",
             'status' => "draft",
         ]);
+       
     }
 }
