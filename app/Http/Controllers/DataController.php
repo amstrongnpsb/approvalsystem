@@ -16,7 +16,7 @@ class DataController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function home()
+    public function home(){
         $user = Auth::user();
         return view('index', [
             'title' => 'HomePage',
