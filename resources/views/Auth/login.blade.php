@@ -23,12 +23,12 @@
                     <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
                         name="email" placeholder="name@example.com value=" {{ old('email') }}" autofocus required">
                     <label for="email">Email address</label>
-                </div>
                 @error('email')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
                 @enderror
+                </div>
                 <div class="form-floating mb-4">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                         required>

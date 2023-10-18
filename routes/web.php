@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,8 @@ use App\Http\Controllers\DataController;
 |
 */
 
-Route::get('/', [DataController::class, 'home'])->name('home');
-Route::get('/home', [DataController::class, 'home']);
+Route::get('/', [DataController::class, 'home'])->name('home')->middleware('auth');
+Route::get('/home', [DataController::class, 'home'])->middleware('auth');
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -24,14 +25,15 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 
 Route::resource('data', DataController::class)->middleware('auth');
 Route::prefix('action')->group(function () {
-    Route::post('/data/importexcel', [DataController::class, 'importexcel'])->name('data.importexcel');
+    Route::post('/data/importexcel', [DataController::class, 'importExcel'])->name('data.importexcel');
      Route::get('/data/exportexcel', [DataController::class, 'exportExcel'])->name('data.exportexcel');
-     Route::get('/data/exportpdf', [DataController::class, 'exportpdf'])->name('data.exportpdf');
+     Route::get('/data/exportpdf', [DataController::class, 'exportPdf'])->name('data.exportpdf');
 })->middleware('auth');
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', [DataController::class, 'home'])->name('home');
-    Route::get('/home', [DataController::class, 'home']);
+Route::middleware('auth')->group(function () {
+    Route::resource('user', UserController::class)->name('user','create');
+     Route::resource('user', UserController::class)->name('user','index');
+     Route::get('/user/group/list', [UserController::class, 'groupList'])->name('user.group');
 });
 
 
