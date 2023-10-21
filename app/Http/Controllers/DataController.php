@@ -48,7 +48,7 @@ class DataController extends Controller
      }
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user()->with('userrole')->whereId(Auth::user()->id)->first();
         $data = Data::latest()->filter(request(['search','severity_filter']))->paginate(10);
         return view('data.index', [
             "title" => "Data List",
