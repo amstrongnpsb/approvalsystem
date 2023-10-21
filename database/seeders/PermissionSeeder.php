@@ -49,13 +49,13 @@ class PermissionSeeder extends Seeder
         }
         $projectAdmin = Role::create(['name' => 'project-admin']);
         foreach ($projectPermission as $permission) {
-            $admin->givePermissionTo($permission);
+            $projectAdmin->givePermissionTo($permission);
         }
 
         $projectManager =  Role::create(['name' => 'project-manager']);
         $projectManager->givePermissionTo('view data');
 
-        $role3 = Role::create(['name' => 'Super-Admin']);
+        Role::create(['name' => 'Super-Admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider
 
         // create users
