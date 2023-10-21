@@ -14,14 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        // User::create([
 
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'nik' => 423123642,
-            'role_id' => 1,
-            'password' => bcrypt('password123'),
-            'created_at' => Carbon::now(),
-        ]);
+        //     'name' => 'admin',
+        //     'username' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        //     'nik' => 423123642,
+        //     'password' => bcrypt('password123'),
+        //     'created_at' => Carbon::now(),
+        // ]);
     }
 }
