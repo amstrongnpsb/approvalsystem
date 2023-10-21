@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sub_data', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('data_id')->constrained('data')->onDelete('cascade');
-            $table->string('user_name');
+            $table->foreignId('username')->constrained('users')->onDelete('cascade');
             $table->string('nik');
             $table->string('task_title');
             $table->text('task_description');

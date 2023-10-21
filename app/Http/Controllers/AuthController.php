@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/data')->with('success', 'Login Success');
+            return redirect()->intended('/')->with('success', 'Login Success');
         }
         return back()->with('error', 'Login Failed');
         

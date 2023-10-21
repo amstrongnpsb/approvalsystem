@@ -24,7 +24,7 @@
                 </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="role_id" class="form-label">Role</label>
                 <select class="form-select" name="role_id">
                     @foreach ($roles as $role)
@@ -35,7 +35,7 @@
                     @endif
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="form-floating mb-3">
                 <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
                     placeholder="name@example.com value=" {{ old('email') }}" required">

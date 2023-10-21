@@ -23,18 +23,21 @@ Route::post('/login', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 
-Route::resource('data', DataController::class)->middleware('auth');
-Route::prefix('action')->group(function () {
-    Route::post('/data/importexcel', [DataController::class, 'importExcel'])->name('data.importexcel');
-     Route::get('/data/exportexcel', [DataController::class, 'exportExcel'])->name('data.exportexcel');
-     Route::get('/data/exportpdf', [DataController::class, 'exportPdf'])->name('data.exportpdf');
-})->middleware('auth');
+Route::get('data', [DataController::class, 'index'])->middleware(['auth','can:view data']);
+Route::middleware(['auth', 'role:project-admin'])->group(function () {
+    Route::prefix('action')->group(function () {
+        Route::post('/data/importexcel', [DataController::class, 'importExcel'])->name('data.importexcel');
+         Route::get('/data/exportexcel', [DataController::class, 'exportExcel'])->name('data.exportexcel');
+         Route::get('/data/exportpdf', [DataController::class, 'exportPdf'])->name('data.exportpdf');
+    });
+});
 
-Route::middleware('auth')->group(function () {
+Route::middleware([ 'auth','role:admin'])->group(function () {
     Route::resource('user', UserController::class)->name('user','create');
      Route::resource('user', UserController::class)->name('user','index');
      Route::get('/user/group/list', [UserController::class, 'groupList'])->name('user.group');
 });
+
 
 
 

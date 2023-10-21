@@ -17,18 +17,25 @@
                     <small>Home</small>
                 </a>
             </li>
+            @hasanyrole('project-manager|project-admin')
             <div type="button" class="dropdown-toggle fw-bold fs-4 " data-bs-toggle="dropdown">
                 <i class="fa-solid fa-list-check"></i>
                 <small>Data</small>
             </div>
             <ul class="dropdown-menu nav-item w-75">
+                @can('view data')
                 <a href="/data" class="dropdown-item {{ Request::is('data') ? 'active' : '' }} fw-bold">Data
                     List</a>
+                @endcan
+                @can('edit data')
                 <a href="/data/create"
                     class="dropdown-item {{ Request::is('data/create*') ? 'active' : '' }} fw-bold">Create
                     Data</a>
                 <a href="/data/edit" class="dropdown-item fw-bold">Edit Data</a>
+                @endcan
             </ul>
+            @endhasanyrole
+            @role('admin')
             <div type="button" class="dropdown-toggle fw-bold fs-4" data-bs-toggle="dropdown">
                 <i class="fa-solid fa-users"></i>
                 <small>User</small>
@@ -40,6 +47,7 @@
                     class="dropdown-item {{ Request::is('user/create*') ? 'active' : '' }} fw-bold">Create
                     User</a>
             </ul>
+            @endrole
 
         </ul>
     </div>
