@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('container')
 <h1 class="text-center text-light">{{ $title }}</h1>
-@include('data/exportimport/index')
 <div class="table-responsive">
     <table class="table mt-5 w-75 m-auto" id="datatables">
         <thead>
