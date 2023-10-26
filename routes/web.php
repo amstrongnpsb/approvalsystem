@@ -24,7 +24,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 
 Route::get('data', [DataController::class, 'index'])->middleware(['auth','can:view data']);
-Route::get('datatable', [DataController::class, 'datatable'])->name('datatable')->middleware(['auth','can:view data']);
+Route::get('datatable', [DataController::class, 'dataTable'])->name('datatable')->middleware(['auth','can:view data']);
+Route::get('data/json', [DataController::class, 'dataJson'])->name('datajson')->middleware(['auth']);
 Route::middleware(['auth', 'role:project-admin'])->group(function () {
     Route::prefix('action')->group(function () {
         Route::post('/data/importexcel', [DataController::class, 'importExcel'])->name('data.importexcel');
