@@ -45,6 +45,17 @@ class DataController extends Controller
          @dd("hello");
       
      }
+    public function datatable()
+    {
+         @dd("hello");
+        $user = Auth::user();
+        $data = Data::latest()->filter(request(['search','severity_filter']))->paginate(10);
+        return view('data.index', [
+            "title" => "Data List",
+            "data" => $data,
+            'user' => $user
+        ]);
+    }
     public function index()
     {
         $user = Auth::user();

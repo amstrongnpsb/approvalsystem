@@ -24,6 +24,9 @@
             </div>
             <ul class="dropdown-menu nav-item w-75">
                 @can('view data')
+                <a href="{{ route('datatable') }}" class="dropdown-item {{ Request::is('datatable') ? 'active' : '' }} fw-bold">DataTable</a>
+                @endcan
+                @can('view data')
                 <a href="/data" class="dropdown-item {{ Request::is('data') ? 'active' : '' }} fw-bold">Data
                     List</a>
                 @endcan
