@@ -6,6 +6,7 @@ use App\Models\Data;
 use App\Exports\DataExport;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -45,6 +46,18 @@ class DataController extends Controller
          @dd("hello");
       
      }
+     public function dataJson()
+     {
+        return Datatables::of(Data::all())->make(true);
+     }
+    public function dataTable()
+    {
+        $user = Auth::user();
+        return view('data.datatable', [
+            "title" => "Data Table",
+            'user' => $user
+        ]);
+    }
     public function index()
     {
         $user = Auth::user();
