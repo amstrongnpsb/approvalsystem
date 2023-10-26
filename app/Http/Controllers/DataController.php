@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 Use \Carbon\Carbon;
 use App\Models\Data;
+use App\Exports\DataExport;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
 use Illuminate\Http\Request;
@@ -35,11 +36,9 @@ class DataController extends Controller
         importExcelJob::dispatch($fileName);
         return redirect('/data')->with('success', 'your import under process');
      }
-     public function exportExcel()
+     public function exportExcel(Request $request)
      {
-        $id = IdGenerator::generate(['table' => 'data', 'field' => 'data_number', 'length' => 9, 'prefix' => 'DOC-']);
-        @dd($id);
-      
+        return Excel::download(new DataExport($request), 'data.xlsx');
      }
      public function exportPdf()
      {

@@ -14,9 +14,13 @@
             </div>
             @enderror
         </form>
-        <a class="btn btn-outline-success btn-sm col col-md-2 m-auto" href="{{route('data.exportexcel')}}">
-            Export Excel
-        </a>
+        <div class="col-2">
+        <form action=" {{route('data.exportexcel')}}" method="get">
+            <input type="hidden" name="search" value="{{ request('search') }}">
+            <input type="hidden" name="severity_filter" value="{{ request('severity_filter') }}">
+            <button type="submit" class="btn btn-outline-success">Export Excel</button>
+        </form>
+        </div>
         <a class="btn btn-outline-danger btn-sm col col-md-2 m-auto m-auto" href="{{route('data.exportpdf')}}">
             Export Pdf
         </a>
