@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 Use \Carbon\Carbon;
+use DataTables;
 use App\Models\Data;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Exports\DataExport;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
-use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -41,22 +42,27 @@ class DataController extends Controller
      {
         return Excel::download(new DataExport($request), 'data.xlsx');
      }
-     public function exportPdf()
+     public function exportPdf($id)
      {
-         @dd("hello");
-      
+        $data = Data::find($id);
+        $pdf = PDF::loadview('preview.pdf.index',['data'=>$data]);
+    	 return $pdf->stream('data.pdf');
      }
-     public function dataJson()
-     {
-        return Datatables::of(Data::all())->make(true);
-     }
-    public function dataTable()
+    public function dataTable(Request $request)
     {
+        if ($request->ajax()) {
+            // return Datatables::of(Data::query())->toJson();
+            return Datatables::of(Data::query())->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="/data/exportpdf/'.$row->id.'" class="btn btn-primary btn-sm">View</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         $user = Auth::user();
-         $data = Data::latest()->filter(request(['search','severity_filter']))->get();
         return view('data.datatable', [
             "title" => "Data Table",
-             "data" => $data,
             'user' => $user
         ]);
     }

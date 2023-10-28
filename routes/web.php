@@ -25,12 +25,11 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 
 Route::get('data', [DataController::class, 'index'])->middleware(['auth','can:view data']);
 Route::get('datatable', [DataController::class, 'dataTable'])->name('datatable')->middleware(['auth','can:view data']);
-Route::get('data/json', [DataController::class, 'dataJson'])->name('datajson')->middleware(['auth']);
 Route::middleware(['auth', 'role:project-admin'])->group(function () {
-    Route::prefix('action')->group(function () {
-        Route::post('/data/importexcel', [DataController::class, 'importExcel'])->name('data.importexcel');
-         Route::get('/data/exportexcel', [DataController::class, 'exportExcel'])->name('data.exportexcel');
-         Route::get('/data/exportpdf', [DataController::class, 'exportPdf'])->name('data.exportpdf');
+    Route::prefix('data')->group(function () {
+        Route::post('/importexcel', [DataController::class, 'importExcel'])->name('importexcel');
+         Route::get('/exportexcel', [DataController::class, 'exportExcel'])->name('exportexcel');
+         Route::get('/exportpdf/{id}', [DataController::class, 'exportPdf'])->name('exportpdf');
     });
 });
 
