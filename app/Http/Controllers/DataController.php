@@ -53,8 +53,10 @@ class DataController extends Controller
     public function dataTable()
     {
         $user = Auth::user();
+         $data = Data::latest()->filter(request(['search','severity_filter']))->get();
         return view('data.datatable', [
             "title" => "Data Table",
+             "data" => $data,
             'user' => $user
         ]);
     }
