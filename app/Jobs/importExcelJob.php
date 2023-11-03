@@ -13,13 +13,13 @@ use App\Imports\DataImport;
 
 class importExcelJob implements ShouldQueue
 {
-     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
     public $fileName;
-    public function __construct( string $fileName)
+    public function __construct(string $fileName)
     {
         $this->fileName = $fileName;
     }
@@ -30,6 +30,6 @@ class importExcelJob implements ShouldQueue
     public function handle(): void
     {
         $fileName = $this->fileName;
-         Excel::import(new DataImport, public_path('/excelimportfolder/'.$fileName));
+        Excel::import(new DataImport, public_path('/excelimportfolder/' . $fileName));
     }
 }

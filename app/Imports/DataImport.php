@@ -9,14 +9,14 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class DataImport implements ToModel,WithHeadingRow
+class DataImport implements ToModel, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-     public function headingRow(): int
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function headingRow(): int
     {
         return 1;
     }
@@ -24,12 +24,12 @@ class DataImport implements ToModel,WithHeadingRow
     {
         $id = IdGenerator::generate(['table' => 'data', 'field' => 'data_number', 'length' => 9, 'prefix' => 'DOC-']);
         return new Data([
-           'data_number' =>$id,
-           'description' => $row['description'],
-           'creator' => $row['creator'],
-           'status' => $row['status'],
-           'created_at' => Carbon::now()->toDateTimeString(),
-           'updated_at' =>Carbon::now()->toDateTimeString(),
+            'data_number' => $id,
+            'description' => $row['description'],
+            'creator' => $row['creator'],
+            'status' => $row['status'],
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
         ]);
     }
 }

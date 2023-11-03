@@ -1,34 +1,36 @@
 <?php
 
 namespace App\Http\Controllers;
-Use \Carbon\Carbon;
-use DataTables;
-use App\Models\Data;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
 use App\Exports\DataExport;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
+use App\Models\Data;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use \Carbon\Carbon;
+use DataTables;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function home(){
+    public function home()
+    {
         $user = Auth::user();
         return view('index', [
             'title' => 'HomePage',
             'user' => $user
         ]);
-     }
+    }
     public function importExcel(Request $request)
-     {
-        $validatedData = $request->validate([
+    {
+        $request->validate([
             'import_file' => 'required|mimes:xlsx|max:10000'
         ]);
 
@@ -37,24 +39,24 @@ class DataController extends Controller
         $file->move('excelimportfolder', $fileName);
         importExcelJob::dispatch($fileName);
         return redirect('/data')->with('success', 'your import under process');
-     }
-     public function exportExcel(Request $request)
-     {
+    }
+    public function exportExcel(Request $request)
+    {
         return Excel::download(new DataExport($request), 'data.xlsx');
-     }
-     public function exportPdf($id)
-     {
+    }
+    public function exportPdf($id)
+    {
         $data = Data::find($id);
-        $pdf = PDF::loadview('preview.pdf.index',['data'=>$data]);
-    	 return $pdf->stream('data.pdf');
-     }
+        $pdf = PDF::loadview('preview.pdf.index', ['data' => $data]);
+        return $pdf->stream('data.pdf');
+    }
     public function dataTable(Request $request)
     {
         if ($request->ajax()) {
             // return Datatables::of(Data::query())->toJson();
             return Datatables::of(Data::query())->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="/data/exportpdf/'.$row->id.'" class="btn btn-primary btn-sm">View</a>';
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="/data/exportpdf/' . $row->id . '" class="btn btn-primary btn-sm">View</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -66,10 +68,10 @@ class DataController extends Controller
             'user' => $user
         ]);
     }
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $data = Data::latest()->filter(request(['search','severity_filter']))->paginate(10);
+        $data = Data::latest()->filter(request(['search', 'status']))->paginate(10);
         return view('data.index', [
             "title" => "Data List",
             "data" => $data,
@@ -111,7 +113,7 @@ class DataController extends Controller
     {
         return view('index', [
             "title" => "Edit Data",
-            
+
         ]);
     }
 

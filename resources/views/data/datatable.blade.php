@@ -54,25 +54,25 @@
 <script>
   $(document).ready( function () {
     $('#datatables').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: {url: '/datatable', type: 'GET'},
-    columns: [
-      {
-          render: function (data, type, row, meta) {
-             return meta.row + meta.settings._iDisplayStart + 1;
-          },
-      },
-      { data: 'data_number', name: 'data_number' },
-      { data: 'description', name: 'description' },
-      { data: 'creator', name: 'creator' },
-      { data: 'status', name: 'status' },
-      { data: 'created_at', name: 'created_at',render: function (data) {
-          return moment(data).format('Y-M-D');
-        }},
-      {data: 'action', name: 'action', orderable: false, searchable: false},
-     ]
+        processing: true,
+        serverSide: true,
+        ajax: {url: '/datatable', type: 'GET'},
+      columns: [
+        {
+            render: function (data, type, row, meta) {
+              return meta.row + meta.settings._iDisplayStart + 1;
+            },
+        },
+        { data: 'data_number', name: 'data_number' },
+        { data: 'description', name: 'description' },
+        { data: 'creator', name: 'creator' },
+        { data: 'status', name: 'status' },
+        { data: 'created_at', name: 'created_at',render: function (data) {
+            return moment(data).format('Y-M-D');
+          }},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
+      ]
     });
-} );
+  });
 </script>
 @endpush
