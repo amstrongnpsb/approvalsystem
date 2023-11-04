@@ -6,8 +6,18 @@
         <form action="/user" method="POST">
             @csrf
             <div class="form-floating mb-3">
-                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                    placeholder="name@example.com value=" {{ old('name') }}" autofocus required">
+                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
+                    name="username" placeholder="username" value="{{ old('username') }}" autofocus required>
+                <label for="username">Username</label>
+                @error('username')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="name"
+                    value="{{ old('name') }}" required">
                 <label for="name">Name</label>
                 @error('name')
                 <div class="invalid-feedback">
@@ -16,7 +26,8 @@
                 @enderror
             </div>
             <div class="form-floating mb-4">
-                <input type="text" class="form-control" id="nik" name="nik" placeholder="nik" required>
+                <input type="text" class="form-control" id="nik" name="nik" placeholder="nik" value="{{ old('nik') }}"
+                    required>
                 <label for="nik">NIK</label>
                 @error('nik')
                 <div class="invalid-feedback">
@@ -24,21 +35,21 @@
                 </div>
                 @enderror
             </div>
-            {{-- <div class="mb-3">
-                <label for="role_id" class="form-label">Role</label>
-                <select class="form-select" name="role_id">
+            <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select" name="role">
                     @foreach ($roles as $role)
-                    @if(old('role_id') == $role->id)
-                    <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
+                    @if(old('role') == $role)
+                    <option value="{{ $role }}" selected>{{ $role }}</option>
                     @else
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                    <option value="{{ $role }}">{{ $role }}</option>
                     @endif
                     @endforeach
                 </select>
-            </div> --}}
+            </div>
             <div class="form-floating mb-3">
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
-                    placeholder="name@example.com value=" {{ old('email') }}" required">
+                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="example@gmail.com"
+                    value=" {{ old('email') }}" required">
                 <label for="email">Email address</label>
                 @error('email')
                 <div class="invalid-feedback">
