@@ -10,6 +10,7 @@
             <th scope="col">Nik</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
+            <th scope="col">Is Active</th>
             <th scope="col">Action</th>
         </tr>
     </thead>
@@ -21,10 +22,15 @@
             <td>{{ $user->name}}</td>
             <td>{{ $user->nik }}</td>
             <td>{{ $user->email }}</td>
+            @if ($user->is_active == 1)
+                <td><span class="badge bg-success">Active</span></td>
+            @else
+                <td><span class="badge bg-danger">Inactive</span></td>
+            @endif
             <td>{{ $user->roles[0]->name }}</td>
             <td>
                 @if($user->roles[0]->name != "Super-Admin")
-                <button class="btn btn-info edit-user" data-userId="{{ $user->id }}">Edit</button>
+                <button class="btn btn-info edit_user" data-userId="{{ $user->id }}">Edit</button>
                 <button class="btn btn-dark permissions" data-roleId="{{ $user->roles[0]->id }}">Permissions</button>
                 <div class="modal fade" id="permissions-modal" aria-hidden="true"
                     aria-labelledby="permissions-modal-label" tabindex="-1">
@@ -57,28 +63,35 @@
                 <div class="modal-body">
                     <form>
                         @csrf
-                        <input type="hidden" value="" id="edit-user-id">
+                        <input type="hidden" value="" id="edit_user_id">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="edit-username" name="username"
+                            <input type="text" class="form-control" id="edit_username" name="username"
                                 placeholder="username" value="" autofocus required>
                             <label for="username">Username</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="edit-name" name="name" placeholder="name"
+                            <input type="text" class="form-control" id="edit_name" name="name" placeholder="name"
                                 value="" required">
                             <label for="name">Name</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="edit-nik" name="nik" placeholder="nik" value=""
+                            <input type="text" class="form-control" id="edit_nik" name="nik" placeholder="nik" value=""
                                 required>
                             <label for="nik">NIK</label>
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
-                            <select class="form-select" name="role" id="edit-role" value="">
+                            <select class="form-select" name="role" id="edit_role" value="">
                                 @foreach ($roles as $role)
                                 <option value="{{ $role }}">{{ $role }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Is Active</label>
+                            <select class="form-select" name="role" id="edit_is_active" value="">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
                             </select>
                         </div>
                         <button type="button" class="btn btn-dark mb-4 " id="update">Edit</button>
@@ -113,21 +126,23 @@
         });
     })
 
-    $(".edit-user").click(function () {
+    $(".edit_user").click(function () {
         const userId = $(this).attr("data-userId");
         $("#edit-user-modal").modal("show");
         $.ajax({
             url: `user/${userId}/edit`,
             method: "GET",
             success: function (response) {
+                console.log(response);
                 if (response.status == 404) {
                     console.log(`error ${response.message}`);
                 } else {
-                    $("#edit-user-id").val(response.user.id);
-                    $("#edit-username").val(response.user.username);
-                    $("#edit-name").val(response.user.name);
-                    $("#edit-nik").val(response.user.nik);
-                    $("#edit-role").val(response.user.roles[0].name);
+                    $("#edit_user_id").val(response.user.id);
+                    $("#edit_username").val(response.user.username);
+                    $("#edit_name").val(response.user.name);
+                    $("#edit_nik").val(response.user.nik);
+                    $("#edit_is_active").val(response.user.is_active);
+                    $("#edit_role").val(response.user.roles[0].name);
                 }
             },
             error: function (xhr, status, error) {
@@ -138,13 +153,14 @@
 
     $("#update").click(function (e) {
         e.preventDefault();
-        const userId = $('#edit-user-id').val();
+        const userId = $('#edit_user_id').val();
         const user = {
             id: userId,
-            username: $("#edit-username").val(),
-            name: $("#edit-name").val(),
-            nik: $("#edit-nik").val(),
-            role: $("#edit-role").val(),
+            username: $("#edit_username").val(),
+            name: $("#edit_name").val(),
+            nik: $("#edit_nik").val(),
+            role: $("#edit_role").val(),
+            is_active: $("#edit_is_active").val()
         }
         console.log(user);
         $.ajaxSetup({

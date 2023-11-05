@@ -119,6 +119,7 @@ class UserController extends Controller
             'username' => 'required',
             'name' => 'required',
             'nik' => 'required',
+            'is_active' => 'required',
             'role' => [
                 'required',
                 function ($attribute, $value, $fail) {
@@ -138,6 +139,7 @@ class UserController extends Controller
                 'username' => $request['username'],
                 'name' => $request['name'],
                 'nik' => $request['nik'],
+                'is_active' => $request['is_active'],
             ]);
             DB::table('model_has_roles')->where('model_id', $request->id)->update([
                 'role_id' => $rolesId,
