@@ -21,7 +21,8 @@ Route::get('/home', [DataController::class, 'home'])->middleware('auth');
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
+Route::post('/register', [AuthController::class, 'store'])->name('register-user');
 
 Route::get('data', [DataController::class, 'index'])->middleware(['auth', 'can:view data']);
 Route::get('datatable', [DataController::class, 'dataTable'])->name('datatable')->middleware(['auth', 'can:view data']);
