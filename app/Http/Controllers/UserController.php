@@ -33,10 +33,12 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $users = User::with('roles')->paginate(10);
+        $roles = DB::table("roles")->pluck('name');
         return view('user.index', [
             "title" => "User List",
             "user" => $user,
-            "users" => $users
+            "users" => $users,
+            "roles" => $roles
         ]);
     }
 
@@ -94,7 +96,18 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        dd("edit");
+        $user = User::where('id', $user->id)->with('roles')->first();
+        if ($user) {
+            return response()->json([
+                'status' => 200,
+                'user' => $user,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found',
+            ]);
+        }
     }
 
     /**
@@ -102,7 +115,37 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'username' => 'required',
+            'name' => 'required',
+            'nik' => 'required',
+            'role' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if ($value == 'Super-Admin') {
+                        $fail('The role field cannot be "super-admin".');
+                    }
+                },
+            ],
+        ]);
+        if ($validate->fails()) {
+            return $request->session()->flash('error', 'Fail to update user ' . $validate->errors());
+        }
+        $role = DB::table('roles')->where('name', '=', $request['role'])->first();
+        $rolesId = $role->id;
+        try {
+            User::where('id', $request['id'])->update([
+                'username' => $request['username'],
+                'name' => $request['name'],
+                'nik' => $request['nik'],
+            ]);
+            DB::table('model_has_roles')->where('model_id', $request->id)->update([
+                'role_id' => $rolesId,
+            ]);
+            return $request->session()->flash('success', 'User has been updated');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     /**

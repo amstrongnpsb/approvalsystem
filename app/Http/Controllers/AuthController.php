@@ -22,12 +22,17 @@ class AuthController extends Controller
             'email' => 'required|email:dns',
             'password' => 'required'
         ]);
-
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/')->with('success', 'Login Success');
+            $user = User::where('email', $request->email)->first();
+            if ($user['is_active'] == 1) {
+                $request->session()->regenerate();
+                return redirect()->intended('/')->with('success', 'Login Success');
+            } else {
+                Auth::logout();
+                return back()->with('error', 'Your Account is not active');
+            }
         }
-        return back()->with('error', 'Login Failed');
+        return back()->with('error', 'Login Failed, Your email or password is incorrect');
 
     }
     public function logout(Request $request)
