@@ -24,16 +24,39 @@
     </div>
 
     <form class="d-flex w-50" role="search" action=" /data" method="get">
-        <div class="form-control me-2 w-25">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">Select Status</option>
-                <option value="draft" {{ request('status')=='draft' ? 'selected' : '' }}>Draft</option>
-                <option value="on progress" {{ request('status')=='on progress' ? 'selected' : '' }}>On Progress</option>
-                <option value="done" {{ request('status')=='done' ? 'selected' : '' }}>Done</option>
+        <div class="col-xxl-3 col-md-6">
+            <label for="status" class="form-label fw-semibold">Status</label>
+            <select id="status" name="status[]" class="statusFilter form-select" multiple>
+                <option></option>
+                @if(Request::get('status'))
+                    @foreach (Request::get('status') as $status )
+                        <option value="{{ $status }}" selected>{{ $status }}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
-        <input class="form-control me-2 w-50" type="text" placeholder="Search" aria-label="Search" name="search"
-            value="{{ request('search') }}">
+        <div class="col-xxl-3 col-md-6">
+            <label for="dataNumber" class="form-label fw-semibold">Data Number</label>
+            <select id="dataNumber" name="data_number[]" class="dataNumberFilter form-select" multiple>
+                <option></option>
+                @if(Request::get('data_number'))
+                    @foreach (Request::get('data_number') as $dataNumber )
+                        <option value="{{ $dataNumber }}" selected>{{ $dataNumber }}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
+        <div class="col-xxl-3 col-md-6">
+            <label for="creator" class="form-label fw-semibold">Creator</label>
+            <select id="creator" name="creator[]" class="creatorFilter form-select" multiple>
+                <option></option>
+                @if(Request::get('creator'))
+                    @foreach (Request::get('creator') as $creator )
+                        <option value="{{ $creator }}" selected>{{ $creator }}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
         <button class="btn btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FilterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
@@ -26,6 +27,8 @@ Route::post('/register', [AuthController::class, 'store'])->name('register-user'
 
 Route::get('data', [DataController::class, 'index'])->middleware(['auth', 'can:view data']);
 Route::get('datatable', [DataController::class, 'dataTable'])->name('datatable')->middleware(['auth', 'can:view data']);
+Route::get('filterOnDataTable', [FilterController::class, 'filterOnDataTable'])->name('filter.onDataTable');
+
 Route::middleware(['auth', 'role:project-admin'])->group(function () {
     Route::prefix('data')->group(function () {
         Route::post('/importexcel', [DataController::class, 'importExcel'])->name('importexcel');

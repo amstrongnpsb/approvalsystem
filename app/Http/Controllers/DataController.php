@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
+use \Carbon\Carbon;
+use App\Models\Data;
+use Meilisearch\Client;
 use App\Exports\DataExport;
 use App\Imports\DataImport;
 use App\Jobs\importExcelJob;
-use App\Models\Data;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
-use \Carbon\Carbon;
-use DataTables;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class DataController extends Controller
 {
@@ -53,7 +54,6 @@ class DataController extends Controller
     public function dataTable(Request $request)
     {
         if ($request->ajax()) {
-            // return Datatables::of(Data::query())->toJson();
             return Datatables::of(Data::query())->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="/data/exportpdf/' . $row->id . '" class="btn btn-primary btn-sm">View</a>';
@@ -71,7 +71,26 @@ class DataController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $data = Data::latest()->filter(request(['search', 'status']))->paginate(10);
+        $client = new Client('http://localhost:7700', 'QBRur6y-ECsUSrWOO-p4Rcpnm2xmypUxC3FqxA7EWG4');
+        $index = $client->index('data');
+        $index->updateFilterableAttributes(['status', 'data_number', 'creator']);
+        if ($request->all()) {
+            $data = Data::search();
+            $data->when($request->has('status'), function ($query) use ($request) {
+                $query->whereIn('status', $request['status']);
+            });
+            $data->when($request->has('data_number'), function ($query) use ($request) {
+                $query->whereIn('data_number', $request['data_number']);
+            });
+            $data->when($request->has('creator'), function ($query) use ($request) {
+                $query->whereIn('creator', $request['creator']);
+            });
+            $data = $data->paginate(10);
+        } else {
+
+            $data = Data::paginate(10);
+        }
+
         return view('data.index', [
             "title" => "Data List",
             "data" => $data,
